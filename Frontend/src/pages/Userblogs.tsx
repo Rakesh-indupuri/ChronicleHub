@@ -1,10 +1,10 @@
 import { Appbar } from "../components/Appbar"
 import { BlogCard } from "../components/BlogCard"
 import { BlogSkeleton } from "../components/BlogSkeleton";
-import { useBlogs } from "../hooks";
+import { useUserBlogs } from "../hooks";
 
 export const Userblogs = () => {
-    const { loading, blogs } = useBlogs();
+    const { loading, blogs } = useUserBlogs();
 
     if (loading) {
         return <div>
@@ -24,17 +24,25 @@ export const Userblogs = () => {
     return <div>
         <Appbar />
         <div  className="flex justify-center">
-            <div>
-                {blogs.map(blog => <BlogCard
-                    key={blog.id}
-                    id={blog.id}
-                    authorName={blog.author.name || "Anonymous"}
-                    title={blog.title}
-                    content={blog.content}
-                    publishedDate={blog.createdAt}
-                    showButtons={true}
-                />)}
+        {blogs.length === 0 ? (
+                    <div className="mt-20 ml-5 font-libre font-semibold text-xl">
+                        NO BLOGS AVAILABLE NOW,UPLOAD SOME !!!
+                    </div>
+                ) : (
+                    <div>
+                        {blogs.map(blog => (
+                            <BlogCard
+                                key={blog.id}
+                                id={blog.id}
+                                authorName={blog.author.name || "Anonymous"}
+                                title={blog.title}
+                                content={blog.content}
+                                publishedDate={blog.createdAt}
+                                showButtons={true}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
-        </div>
     </div>
 }

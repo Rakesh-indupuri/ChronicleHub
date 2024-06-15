@@ -55,3 +55,26 @@ export const useBlogs = () => {
         blogs
     }
 }
+
+export const useUserBlogs = () => {
+    const [loading, setLoading] = useState(true);
+    const [blogs, setBlogs] = useState<Blog[]>([]);
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/v1/blog/userBlogs`, {
+            headers: {
+                Authorization: "Bearer "+localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                const posts = response.data.blogs.flatMap((blog: any) => blog.posts);
+                setBlogs(posts);
+                setLoading(false);
+            })
+    }, [])
+
+    return {
+        loading,
+        blogs
+    }
+}
